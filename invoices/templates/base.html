@@ -1,0 +1,280 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Job Portal{% endblock %}</title>
+
+
+    <!-- ================= SAVED THEME ================= -->
+
+    <script>
+        const savedTheme = localStorage.getItem("jobportal-theme");
+
+        if (savedTheme === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+    </script>
+
+
+    <!-- ================= CSS ================= -->
+
+    <link rel="stylesheet" href="{% static 'job_style.css' %}">
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="main-navbar">
+
+        <!-- LOGO -->
+
+        <div class="navbar-brand">
+            <h2>JobPortal</h2>
+        </div>
+
+
+        <!-- NAVIGATION LINKS -->
+
+        <div class="navbar-links">
+
+            <a href="/">Home</a>
+
+            <a href="/jobs/">Jobs</a>
+
+            <a href="/companies/">Companies</a>
+
+            <a href="/about/">About</a>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+
+        <div class="navbar-right">
+
+
+            {% if user.is_authenticated %}
+
+                <!-- USER -->
+
+                <span class="navbar-user">
+                    <span class="user-icon">♙</span>
+                    Hi, {{ user.username }}
+                </span>
+
+
+                <!-- THEME BUTTON -->
+
+                <button
+                    type="button"
+                    id="theme-toggle"
+                    class="site-theme-toggle"
+                    title="Switch to dark theme"
+                    aria-label="Switch to dark theme"
+                    style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 40px;
+                        height: 40px;
+                        min-width: 40px;
+                        border: 1px solid #dbe4f0;
+                        border-radius: 50%;
+                        background: #f1f6ff;
+                        color: #2563eb;
+                        font-size: 20px;
+                        cursor: pointer;
+                        padding: 0;
+                        margin: 0 8px;
+                    "
+                >
+                    <span id="theme-icon">☾</span>
+                </button>
+
+
+                <!-- LOGOUT -->
+
+                <a href="{% url 'logout' %}" class="logout-btn">
+                    Logout
+                </a>
+
+
+            {% else %}
+
+                <!-- THEME BUTTON FOR LOGGED OUT USER -->
+
+                <button
+                    type="button"
+                    id="theme-toggle"
+                    class="site-theme-toggle"
+                    title="Switch to dark theme"
+                    aria-label="Switch to dark theme"
+                    style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 40px;
+                        height: 40px;
+                        min-width: 40px;
+                        border: 1px solid #dbe4f0;
+                        border-radius: 50%;
+                        background: #f1f6ff;
+                        color: #2563eb;
+                        font-size: 20px;
+                        cursor: pointer;
+                        padding: 0;
+                        margin: 0 8px;
+                    "
+                >
+                    <span id="theme-icon">☾</span>
+                </button>
+
+
+                <a href="{% url 'login' %}">
+                    Login
+                </a>
+
+                <a href="{% url 'register' %}">
+                    Register
+                </a>
+
+            {% endif %}
+
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    {% block content %}
+    {% endblock %}
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>© 2026 Job Portal</p>
+
+    </footer>
+
+
+
+    <!-- ================= THEME SCRIPT ================= -->
+
+    <script>
+
+        const themeButton = document.getElementById("theme-toggle");
+        const themeIcon = document.getElementById("theme-icon");
+
+
+        function updateTheme() {
+
+            const currentTheme =
+                document.documentElement.getAttribute("data-theme");
+
+
+            if (currentTheme === "dark") {
+
+                themeIcon.textContent = "☀";
+
+                themeButton.setAttribute(
+                    "aria-label",
+                    "Switch to light theme"
+                );
+
+                themeButton.setAttribute(
+                    "title",
+                    "Switch to light theme"
+                );
+
+                themeButton.style.background = "#1e293b";
+                themeButton.style.color = "#f8fafc";
+                themeButton.style.borderColor = "#475569";
+
+            }
+
+            else {
+
+                themeIcon.textContent = "☾";
+
+                themeButton.setAttribute(
+                    "aria-label",
+                    "Switch to dark theme"
+                );
+
+                themeButton.setAttribute(
+                    "title",
+                    "Switch to dark theme"
+                );
+
+                themeButton.style.background = "#f1f6ff";
+                themeButton.style.color = "#2563eb";
+                themeButton.style.borderColor = "#dbe4f0";
+
+            }
+
+        }
+
+
+
+        themeButton.addEventListener("click", function () {
+
+            const currentTheme =
+                document.documentElement.getAttribute("data-theme");
+
+
+            if (currentTheme === "dark") {
+
+                document.documentElement.removeAttribute("data-theme");
+
+                localStorage.setItem(
+                    "jobportal-theme",
+                    "light"
+                );
+
+            }
+
+            else {
+
+                document.documentElement.setAttribute(
+                    "data-theme",
+                    "dark"
+                );
+
+                localStorage.setItem(
+                    "jobportal-theme",
+                    "dark"
+                );
+
+            }
+
+
+            updateTheme();
+
+        });
+
+
+
+        updateTheme();
+
+    </script>
+
+
+</body>
+
+</html>

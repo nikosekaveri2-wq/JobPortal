@@ -1,0 +1,670 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+    JobPortal Administration
+{% endblock %}
+
+
+{% block branding %}
+
+<div class="jp-navbar">
+
+    <!-- LOGO -->
+    <a href="/" class="jp-brand">
+        <span class="jp-brand-name">JobPortal</span>
+    </a>
+
+    <!-- NAVIGATION -->
+    <div class="jp-nav-links">
+        <a href="/">Home</a>
+        <a href="/jobs/">Jobs</a>
+        <a href="/companies/">Companies</a>
+        <a href="/about/">About</a>
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extrastyle %}
+
+{{ block.super }}
+
+<style>
+
+/* =====================================================
+   JOBPORTAL DARK THEME
+===================================================== */
+
+:root {
+    --jp-bg: #0f172a;
+    --jp-card: #1e293b;
+    --jp-card-light: #202d40;
+    --jp-border: #334155;
+
+    --jp-text: #f8fafc;
+    --jp-muted: #94a3b8;
+
+    --jp-blue: #2563eb;
+    --jp-blue-hover: #3b82f6;
+
+    --primary: #2563eb !important;
+    --secondary: #1d4ed8 !important;
+    --accent: #2563eb !important;
+
+    --body-fg: #f8fafc !important;
+    --body-bg: #0f172a !important;
+
+    --header-color: #f8fafc !important;
+    --header-bg: #1e293b !important;
+
+    --breadcrumbs-fg: #94a3b8 !important;
+    --breadcrumbs-bg: #0f172a !important;
+
+    --link-fg: #60a5fa !important;
+    --link-hover-color: #93c5fd !important;
+
+    --hairline-color: #334155 !important;
+    --border-color: #334155 !important;
+
+    --darkened-bg: #172235 !important;
+    --selected-bg: #1e3a5f !important;
+}
+
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+html,
+body {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+}
+
+body {
+    font-family: Arial, sans-serif !important;
+}
+
+#container,
+#main,
+#content {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+#header {
+    height: 68px !important;
+    min-height: 68px !important;
+
+    padding: 0 28px !important;
+
+    background: #1e293b !important;
+
+    border-top: 1px solid #334155 !important;
+    border-bottom: 1px solid #334155 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    box-shadow: none !important;
+}
+
+
+/* =====================================================
+   BRAND
+===================================================== */
+
+#branding {
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+}
+
+.jp-navbar {
+    height: 68px;
+
+    display: flex;
+    align-items: center;
+}
+
+.jp-brand {
+    display: flex !important;
+    align-items: center !important;
+
+    text-decoration: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.jp-brand-name {
+    color: #2563eb !important;
+
+    font-size: 22px !important;
+    font-weight: 700 !important;
+
+    letter-spacing: -0.6px !important;
+    line-height: 1 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+.jp-nav-links {
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 32px !important;
+
+    margin-left: 150px !important;
+}
+
+.jp-nav-links a {
+    color: #94a3b8 !important;
+
+    text-decoration: none !important;
+
+    font-size: 14px !important;
+    font-weight: 500 !important;
+
+    transition: color .2s ease !important;
+}
+
+.jp-nav-links a:hover {
+    color: #ffffff !important;
+}
+
+
+/* =====================================================
+   USER TOOLS
+===================================================== */
+
+#user-tools {
+    margin-left: auto !important;
+
+    height: 68px !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 12px !important;
+
+    color: #94a3b8 !important;
+
+    font-size: 12px !important;
+}
+
+#user-tools a {
+    color: #94a3b8 !important;
+}
+
+#user-tools a:hover {
+    color: #ffffff !important;
+}
+
+#user-tools strong {
+    color: #cbd5e1 !important;
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+#logout-form {
+    display: inline-flex !important;
+    align-items: center !important;
+
+    margin-left: 8px !important;
+}
+
+#logout-form button {
+    height: 36px !important;
+
+    padding: 0 17px !important;
+
+    background: #2563eb !important;
+    color: #ffffff !important;
+
+    border: none !important;
+    border-radius: 8px !important;
+
+    font-size: 12px !important;
+    font-weight: 600 !important;
+
+    cursor: pointer !important;
+}
+
+#logout-form button:hover {
+    background: #3b82f6 !important;
+}
+
+
+/* =====================================================
+   THEME BUTTON
+===================================================== */
+
+.theme-toggle {
+    width: 38px !important;
+    height: 38px !important;
+
+    min-width: 38px !important;
+
+    margin-left: 6px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: #1e293b !important;
+    color: #cbd5e1 !important;
+
+    border: 1px solid #475569 !important;
+    border-radius: 50% !important;
+
+    font-size: 16px !important;
+
+    cursor: pointer !important;
+}
+
+.theme-toggle:hover {
+    background: #334155 !important;
+    color: #ffffff !important;
+}
+
+
+/* =====================================================
+   BREADCRUMBS
+===================================================== */
+
+nav[aria-label="Breadcrumbs"] {
+    background: #0f172a !important;
+
+    color: #94a3b8 !important;
+
+    border-bottom: 1px solid #1e293b !important;
+
+    box-shadow: none !important;
+}
+
+nav[aria-label="Breadcrumbs"] .breadcrumbs {
+    background: #0f172a !important;
+
+    color: #94a3b8 !important;
+
+    padding: 12px 28px !important;
+
+    font-size: 12px !important;
+}
+
+nav[aria-label="Breadcrumbs"] a {
+    color: #60a5fa !important;
+
+    text-decoration: none !important;
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+#nav-sidebar {
+    background: #111c2e !important;
+
+    border-right: 1px solid #334155 !important;
+
+    box-shadow: none !important;
+}
+
+#nav-sidebar,
+#nav-sidebar table,
+#nav-sidebar tbody,
+#nav-sidebar tr,
+#nav-sidebar th,
+#nav-sidebar td {
+    background: #111c2e !important;
+}
+
+
+/* SEARCH */
+
+#nav-filter {
+    background: #1e293b !important;
+
+    color: #f8fafc !important;
+
+    border: 1px solid #334155 !important;
+
+    border-radius: 7px !important;
+
+    padding: 8px 10px !important;
+
+    margin: 10px !important;
+
+    width: calc(100% - 20px) !important;
+}
+
+#nav-filter::placeholder {
+    color: #64748b !important;
+}
+
+#nav-filter:focus {
+    border-color: #2563eb !important;
+
+    outline: none !important;
+
+    box-shadow: 0 0 0 2px rgba(37,99,235,.15) !important;
+}
+
+
+/* SIDEBAR HEADINGS */
+
+#nav-sidebar caption {
+    background: #172235 !important;
+
+    color: #cbd5e1 !important;
+
+    border-bottom: 1px solid #334155 !important;
+
+    padding: 11px 13px !important;
+
+    font-size: 10px !important;
+    font-weight: 700 !important;
+
+    letter-spacing: .5px;
+
+    text-transform: uppercase;
+}
+
+
+/* SIDEBAR ROWS */
+
+#nav-sidebar th,
+#nav-sidebar td {
+    background: #111c2e !important;
+
+    border-bottom: 1px solid #263448 !important;
+
+    padding: 9px 13px !important;
+}
+
+#nav-sidebar a {
+    color: #cbd5e1 !important;
+
+    font-size: 13px !important;
+
+    text-decoration: none !important;
+}
+
+#nav-sidebar a:hover {
+    color: #60a5fa !important;
+}
+
+#nav-sidebar .addlink {
+    color: #22c55e !important;
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+#content-main {
+    background: #0f172a !important;
+}
+
+.module {
+    background: #1e293b !important;
+
+    border: 1px solid #334155 !important;
+
+    border-radius: 10px !important;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,.15) !important;
+}
+
+
+/* =====================================================
+   TABLES
+===================================================== */
+
+#result_list {
+    background: #1e293b !important;
+
+    color: #e2e8f0 !important;
+
+    border-collapse: separate !important;
+
+    border-spacing: 0 !important;
+
+    width: 100%;
+}
+
+#result_list thead th {
+    background: #172235 !important;
+
+    color: #94a3b8 !important;
+
+    border-bottom: 1px solid #334155 !important;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+#result_list td,
+#result_list th {
+    padding: 12px 14px !important;
+
+    border-bottom: 1px solid #334155 !important;
+}
+
+#result_list tbody tr {
+    background: #1e293b !important;
+}
+
+#result_list tbody tr:hover {
+    background: #243449 !important;
+}
+
+#result_list a {
+    color: #60a5fa !important;
+}
+
+
+/* =====================================================
+   TEXT
+===================================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #f8fafc !important;
+}
+
+p,
+.help,
+.helptext {
+    color: #94a3b8 !important;
+}
+
+
+/* =====================================================
+   FORMS
+===================================================== */
+
+input,
+textarea,
+select {
+    background: #1e293b !important;
+
+    color: #f8fafc !important;
+
+    border: 1px solid #334155 !important;
+
+    border-radius: 7px !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #64748b !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #2563eb !important;
+
+    outline: none !important;
+
+    box-shadow: 0 0 0 2px rgba(37,99,235,.15) !important;
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.button,
+input[type="submit"],
+input[type="button"],
+.submit-row input,
+a.button {
+    background: #2563eb !important;
+
+    color: #ffffff !important;
+
+    border: none !important;
+
+    border-radius: 7px !important;
+
+    font-weight: 600 !important;
+}
+
+.button:hover,
+input[type="submit"]:hover,
+a.button:hover {
+    background: #3b82f6 !important;
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+body.login {
+    background: #0f172a !important;
+}
+
+body.login #container {
+    background: transparent !important;
+}
+
+#login {
+    background: #1e293b !important;
+
+    border: 1px solid #334155 !important;
+
+    border-top: 3px solid #2563eb !important;
+
+    border-radius: 10px !important;
+
+    box-shadow: 0 12px 35px rgba(0,0,0,.3) !important;
+}
+
+#login h1 {
+    background: #1e293b !important;
+
+    color: #f8fafc !important;
+}
+
+#login label {
+    color: #cbd5e1 !important;
+}
+
+#login input[type="text"],
+#login input[type="password"] {
+    background: #172235 !important;
+
+    color: #f8fafc !important;
+
+    border: 1px solid #334155 !important;
+}
+
+#login .submit-row {
+    background: transparent !important;
+
+    border: none !important;
+}
+
+#login .submit-row input {
+    background: #2563eb !important;
+
+    color: #ffffff !important;
+}
+
+
+/* =====================================================
+   MESSAGES
+===================================================== */
+
+.messagelist li {
+    background: #1e293b !important;
+
+    color: #cbd5e1 !important;
+
+    border: 1px solid #334155 !important;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 900px) {
+
+    #header {
+        padding: 0 14px !important;
+    }
+
+    .jp-nav-links {
+        gap: 16px !important;
+        margin-left: 40px !important;
+    }
+
+    .jp-nav-links a {
+        font-size: 12px !important;
+    }
+
+    #user-tools {
+        gap: 6px !important;
+    }
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block extrahead %}
+
+{{ block.super }}
+
+{% endblock %}

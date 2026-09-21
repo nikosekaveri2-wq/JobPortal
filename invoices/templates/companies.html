@@ -1,0 +1,144 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Companies - JobPortal</title>
+
+    <script>
+    const savedTheme = localStorage.getItem("jobportal-theme");
+
+    if (savedTheme) {
+        document.documentElement.setAttribute("data-theme", savedTheme);
+    }
+</script>
+
+<link rel="stylesheet" href="{% static 'job_style.css' %}">
+    
+
+    <link rel="stylesheet" href="{% static 'job_style.css' %}">
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            JobPortal
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{% url 'home' %}">Home</a>
+
+            <a href="{% url 'jobs' %}">Jobs</a>
+
+            <a href="{% url 'companies' %}">Companies</a>
+
+            <a href="{% url 'about' %}">About</a>
+
+        </div>
+
+
+        {% if user.is_authenticated %}
+
+            <span class="user-name">
+                Hi, {{ user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                Logout
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'login' %}" class="login-btn">
+                Login
+            </a>
+
+        {% endif %}
+
+    </nav>
+
+
+    <section class="jobs-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>Top Companies</h2>
+
+                <p>
+                    Explore companies hiring through JobPortal
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="job-container">
+
+            {% for company in companies %}
+
+            <div class="job-card">
+
+                <div class="job-top">
+
+                    <div class="company-logo">
+                        {{ company|slice:":1"|upper }}
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            {{ company }}
+                        </h3>
+
+                        <p class="company-name">
+                            Hiring on JobPortal
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="no-jobs">
+
+                <h3>No Companies Available</h3>
+
+                <p>
+                    Companies will appear here when jobs are added.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <footer>
+
+        <p>
+            © 2026 JobPortal. All rights reserved.
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,508 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Job Portal</title>
+
+    <!-- Apply saved theme -->
+    <script>
+        const savedTheme = localStorage.getItem("jobportal-theme");
+
+        if (savedTheme === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+    </script>
+
+    <link rel="stylesheet" href="{% static 'job_style.css' %}">
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            JobPortal
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+            <a href="/jobs/">Jobs</a>
+            <a href="/companies/">Companies</a>
+            <a href="/about/">About</a>
+
+        </div>
+
+
+        {% if user.is_authenticated %}
+
+            <div class="user-area">
+
+                <div class="profile-avatar">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="8" r="3.5"></circle>
+                        <path d="M5.5 20c.7-4.1 2.8-6.2 6.5-6.2s5.8 2.1 6.5 6.2"></path>
+                    </svg>
+
+                </div>
+
+                <span class="user-name">
+                    Hi, {{ user.username }}
+                </span>
+
+            </div>
+
+
+            <!-- ================= THEME BUTTON ================= -->
+
+            <button
+                type="button"
+                id="theme-toggle"
+                title="Switch to dark theme"
+                aria-label="Switch to dark theme"
+                style="
+                    width: 40px;
+                    height: 40px;
+                    min-width: 40px;
+                    margin-left: 12px;
+                    margin-right: 8px;
+                    border: 1px solid #dbe4f0;
+                    border-radius: 50%;
+                    background: #f1f6ff;
+                    color: #2563eb;
+                    font-size: 20px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0;
+                "
+            >
+                <span id="theme-icon">☾</span>
+            </button>
+
+
+            <!-- LOGOUT -->
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                Logout
+            </a>
+
+
+        {% else %}
+
+            <!-- THEME BUTTON -->
+
+            <button
+                type="button"
+                id="theme-toggle"
+                title="Switch to dark theme"
+                aria-label="Switch to dark theme"
+                style="
+                    width: 40px;
+                    height: 40px;
+                    min-width: 40px;
+                    margin-left: 12px;
+                    margin-right: 8px;
+                    border: 1px solid #dbe4f0;
+                    border-radius: 50%;
+                    background: #f1f6ff;
+                    color: #2563eb;
+                    font-size: 20px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0;
+                "
+            >
+                <span id="theme-icon">☾</span>
+            </button>
+
+
+            <a href="{% url 'login' %}" class="login-btn">
+                Login
+            </a>
+
+        {% endif %}
+
+    </nav>
+
+
+
+    <!-- ================= HERO / SEARCH ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>Find Your Dream Job</h1>
+
+            <p>
+                Discover the right opportunity and build your career.
+            </p>
+
+
+            <form
+                class="search-box"
+                method="GET"
+                action="{% url 'home' %}"
+            >
+
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search for jobs..."
+                    value="{{ search }}"
+                >
+
+                <input
+                    type="text"
+                    name="location"
+                    placeholder="Location"
+                    value="{{ location }}"
+                >
+
+                <button type="submit">
+                    Search Jobs
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= JOBS SECTION ================= -->
+
+    <section class="jobs-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>Latest Jobs</h2>
+
+                <p>
+                    Explore the latest job opportunities
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="job-container">
+
+
+            <!-- ================= LOCAL DATABASE JOBS ================= -->
+
+            {% for job in jobs %}
+
+                <div class="job-card">
+
+                    <div class="job-top">
+
+                        <div class="company-logo">
+                            {{ job.company|slice:":1"|upper }}
+                        </div>
+
+
+                        <div>
+
+                            <h3>
+                                {{ job.title }}
+                            </h3>
+
+                            <p class="company-name">
+                                {{ job.company }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="job-info">
+
+                        <span>
+                            📍 {{ job.location }}
+                        </span>
+
+                        <span>
+                            💰 {{ job.salary }}
+                        </span>
+
+                    </div>
+
+
+                    <p class="description">
+                        {{ job.description|truncatewords:25 }}
+                    </p>
+
+
+                    <div class="job-bottom">
+
+                        <span class="job-type">
+                            Full Time
+                        </span>
+
+
+                        <a
+                            href="{% url 'job_detail' job.id %}"
+                            class="apply-btn"
+                        >
+                            View Details
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+
+
+            <!-- ================= ADZUNA JOBS ================= -->
+
+            {% for job in adzuna_jobs %}
+
+                <div class="job-card">
+
+                    <div class="job-top">
+
+                        <div class="company-logo">
+                            {{ job.company.display_name|slice:":1"|upper }}
+                        </div>
+
+
+                        <div>
+
+                            <h3>
+                                {{ job.title }}
+                            </h3>
+
+                            <p class="company-name">
+                                {{ job.company.display_name }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="job-info">
+
+                        <span>
+                            📍 {{ job.location.display_name }}
+                        </span>
+
+
+                        {% if job.salary_min %}
+
+                            <span>
+                                💰 {{ job.salary_min }} -
+                                {{ job.salary_max }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    {% if job.description %}
+
+                        <p class="description">
+                            {{ job.description|striptags|truncatewords:25 }}
+                        </p>
+
+                    {% endif %}
+
+
+                    <div class="job-bottom">
+
+                        <span class="job-type">
+                            External Job
+                        </span>
+
+
+                        {% if job.redirect_url %}
+
+                            <a
+                                href="{{ job.redirect_url }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="apply-btn"
+                            >
+                                View Job
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+
+
+            <!-- ================= NO JOBS ================= -->
+
+            {% if not jobs and not adzuna_jobs %}
+
+                <div class="no-jobs">
+
+                    <h3>
+                        No Jobs Available
+                    </h3>
+
+                    <p>
+                        Currently there are no job openings.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            © 2026 JobPortal. All rights reserved.
+        </p>
+
+    </footer>
+
+
+
+    <!-- ================= THEME SCRIPT ================= -->
+
+    <script>
+
+        const themeButton =
+            document.getElementById("theme-toggle");
+
+        const themeIcon =
+            document.getElementById("theme-icon");
+
+
+        function updateTheme() {
+
+            const currentTheme =
+                document.documentElement.getAttribute("data-theme");
+
+
+            if (currentTheme === "dark") {
+
+                themeIcon.textContent = "☀";
+
+                themeButton.setAttribute(
+                    "title",
+                    "Switch to light theme"
+                );
+
+                themeButton.setAttribute(
+                    "aria-label",
+                    "Switch to light theme"
+                );
+
+                themeButton.style.background = "#1f2937";
+                themeButton.style.color = "#f8fafc";
+                themeButton.style.borderColor = "#475569";
+
+            }
+
+            else {
+
+                themeIcon.textContent = "☾";
+
+                themeButton.setAttribute(
+                    "title",
+                    "Switch to dark theme"
+                );
+
+                themeButton.setAttribute(
+                    "aria-label",
+                    "Switch to dark theme"
+                );
+
+                themeButton.style.background = "#f1f6ff";
+                themeButton.style.color = "#2563eb";
+                themeButton.style.borderColor = "#dbe4f0";
+
+            }
+
+        }
+
+
+        themeButton.addEventListener("click", function () {
+
+            const currentTheme =
+                document.documentElement.getAttribute("data-theme");
+
+
+            if (currentTheme === "dark") {
+
+                document.documentElement.removeAttribute(
+                    "data-theme"
+                );
+
+                localStorage.setItem(
+                    "jobportal-theme",
+                    "light"
+                );
+
+            }
+
+            else {
+
+                document.documentElement.setAttribute(
+                    "data-theme",
+                    "dark"
+                );
+
+                localStorage.setItem(
+                    "jobportal-theme",
+                    "dark"
+                );
+
+            }
+
+
+            updateTheme();
+
+        });
+
+
+        updateTheme();
+
+    </script>
+
+
+</body>
+
+</html>

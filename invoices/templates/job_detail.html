@@ -1,0 +1,166 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ job.title }} - JobPortal</title>
+
+   <script>
+    const savedTheme = localStorage.getItem("jobportal-theme");
+
+    if (savedTheme) {
+        document.documentElement.setAttribute("data-theme", savedTheme);
+    }
+</script>
+
+<link rel="stylesheet" href="{% static 'job_style.css' %}">
+
+</head>
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            JobPortal
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+
+            <a href="/jobs/">Jobs</a>
+
+            <a href="/companies/">Companies</a>
+
+            <a href="/about/">About</a>
+
+        </div>
+
+
+        {% if user.is_authenticated %}
+
+            <span class="user-name">
+                Hi, {{ user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                Logout
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'login' %}" class="login-btn">
+                Login
+            </a>
+
+        {% endif %}
+
+    </nav>
+
+
+    <!-- JOB DETAILS -->
+
+    <section class="jobs-section">
+
+        <div class="job-card job-detail-card">
+
+
+            <div class="job-top">
+
+                <div class="company-logo">
+                    {{ job.company|slice:":1"|upper }}
+                </div>
+
+                <div>
+
+                    <h1>
+                        {{ job.title }}
+                    </h1>
+
+                    <p class="company-name">
+                        {{ job.company }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="job-info">
+
+                <span>
+                    📍 {{ job.location }}
+                </span>
+
+                <span>
+                    💰 {{ job.salary }}
+                </span>
+
+            </div>
+
+
+            <hr>
+
+
+            <h2>
+                Job Description
+            </h2>
+
+            <p class="description">
+                {{ job.description }}
+            </p>
+
+
+            <div class="job-bottom">
+
+                <span class="job-type">
+                    Full Time
+                </span>
+
+                <a
+                    href="{% url 'apply_job' job.id %}"
+                    class="apply-btn"
+                >
+                    Apply Now
+                </a>
+
+            </div>
+
+
+            <a
+                href="/"
+                class="back-link"
+            >
+                ← Back to Jobs
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            © 2026 JobPortal. All rights reserved.
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

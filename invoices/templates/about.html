@@ -1,0 +1,116 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About - JobPortal</title>
+
+    <script>
+    const savedTheme = localStorage.getItem("jobportal-theme");
+
+    if (savedTheme) {
+        document.documentElement.setAttribute("data-theme", savedTheme);
+    }
+</script>
+
+<link rel="stylesheet" href="{% static 'job_style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'job_style.css' %}">
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            JobPortal
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{% url 'home' %}">Home</a>
+
+            <a href="{% url 'jobs' %}">Jobs</a>
+
+            <a href="{% url 'companies' %}">Companies</a>
+
+            <a href="{% url 'about' %}">About</a>
+
+        </div>
+
+
+        {% if user.is_authenticated %}
+
+            <span class="user-name">
+                Hi, {{ user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                Logout
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'login' %}" class="login-btn">
+                Login
+            </a>
+
+        {% endif %}
+
+    </nav>
+
+
+    <section class="jobs-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>About JobPortal</h2>
+
+                <p>
+                    Connecting talented people with the right opportunities.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="job-card">
+
+            <h3>Find Your Next Opportunity</h3>
+
+            <p class="description">
+                JobPortal is a simple job platform where candidates can
+                discover job opportunities, explore companies and apply
+                for positions that match their skills.
+            </p>
+
+            <p class="description">
+                Our goal is to make the job search process simple,
+                organized and accessible for everyone.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+
+        <p>
+            © 2026 JobPortal. All rights reserved.
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

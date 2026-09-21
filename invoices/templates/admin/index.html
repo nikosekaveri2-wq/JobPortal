@@ -1,0 +1,587 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.dashboard {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.dashboard-header {
+    margin-bottom: 24px;
+}
+
+.dashboard-header h1 {
+    margin: 0 0 6px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #172033;
+    letter-spacing: -0.4px;
+}
+
+.dashboard-header p {
+    margin: 0;
+    font-size: 13px;
+    color: #718096;
+}
+
+
+/* =========================================================
+   MODEL CARDS
+========================================================= */
+
+.model-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.model-card {
+    min-height: 165px;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #ffffff;
+
+    border: 1px solid #e3e8ef;
+    border-radius: 10px;
+
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.045);
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.model-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 18px rgba(15, 23, 42, 0.07);
+}
+
+
+/* =========================================================
+   CARD ICON
+========================================================= */
+
+.model-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 14px;
+
+    border-radius: 9px;
+
+    background: #eff6ff;
+    color: #2563eb;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   CARD TEXT
+========================================================= */
+
+.model-card h2 {
+    margin: 0 0 5px;
+
+    color: #172033;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.model-card p {
+    margin: 0;
+
+    color: #718096;
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   CARD BUTTONS
+========================================================= */
+
+.model-links {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: auto;
+    padding-top: 16px;
+}
+
+.view-link,
+.add-link {
+    min-height: 29px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 11px;
+
+    border-radius: 6px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-decoration: none !important;
+}
+
+
+/* View */
+
+.view-link {
+    background: #2563eb;
+    color: #ffffff !important;
+}
+
+.view-link:hover {
+    background: #1d4ed8;
+    color: #ffffff !important;
+}
+
+
+/* Add */
+
+.add-link {
+    background: #ffffff;
+
+    border: 1px solid #dce3ec;
+
+    color: #2563eb !important;
+}
+
+.add-link:hover {
+    background: #eff6ff;
+
+    border-color: #bfdbfe;
+}
+
+
+/* =========================================================
+   RECENT ACTIONS
+========================================================= */
+
+.recent-card {
+    background: #ffffff;
+
+    border: 1px solid #e3e8ef;
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 3px 12px rgba(15, 23, 42, 0.045);
+}
+
+
+/* Header */
+
+.recent-header {
+    padding: 16px 19px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e8edf2;
+}
+
+.recent-header h2 {
+    margin: 0;
+
+    color: #172033;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+/* Content */
+
+.recent-content {
+    padding: 0 19px;
+}
+
+.recent-item {
+    min-height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border-bottom: 1px solid #edf0f4;
+}
+
+.recent-item:last-child {
+    border-bottom: none;
+}
+
+
+/* Recent link */
+
+.recent-item a,
+.recent-item > span:first-child {
+    color: #2563eb;
+
+    font-size: 12px;
+
+    text-decoration: none;
+}
+
+.recent-item a:hover {
+    text-decoration: underline;
+}
+
+
+/* Type badge */
+
+.recent-type {
+    flex-shrink: 0;
+
+    padding: 4px 8px;
+
+    border-radius: 5px;
+
+    background: #f1f5f9;
+
+    color: #64748b;
+
+    font-size: 10px;
+    font-weight: 600;
+}
+
+
+/* Empty state */
+
+.no-actions {
+    padding: 25px 0;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+html[data-theme="dark"] .dashboard-header h1 {
+    color: #f1f5f9;
+}
+
+html[data-theme="dark"] .dashboard-header p {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .model-card,
+html[data-theme="dark"] .recent-card {
+    background: #1f2937;
+    border-color: #374151;
+}
+
+html[data-theme="dark"] .model-card h2,
+html[data-theme="dark"] .recent-header h2 {
+    color: #f1f5f9;
+}
+
+html[data-theme="dark"] .model-card p {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .model-icon {
+    background: #243b5a;
+    color: #60a5fa;
+}
+
+html[data-theme="dark"] .add-link {
+    background: #1f2937;
+    border-color: #475569;
+    color: #60a5fa !important;
+}
+
+html[data-theme="dark"] .add-link:hover {
+    background: #273449;
+}
+
+html[data-theme="dark"] .recent-header {
+    background: #1f2937;
+    border-bottom-color: #374151;
+}
+
+html[data-theme="dark"] .recent-item {
+    border-bottom-color: #374151;
+}
+
+html[data-theme="dark"] .recent-type {
+    background: #273449;
+    color: #cbd5e1;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .model-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .dashboard {
+        padding: 0 8px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 25px;
+    }
+
+    .model-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .model-card {
+        min-height: 155px;
+    }
+
+    .recent-item {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+
+        gap: 6px;
+
+        padding: 12px 0;
+    }
+
+}
+
+</style>
+
+
+<div class="dashboard">
+
+
+    <!-- =====================================================
+         DASHBOARD HEADER
+    ====================================================== -->
+
+    <div class="dashboard-header">
+
+        <h1>Dashboard</h1>
+
+        <p>
+            Manage your JobPortal website from here.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         MODEL CARDS
+    ====================================================== -->
+
+    <div class="model-grid">
+
+        {% for app in app_list %}
+
+            {% for model in app.models %}
+
+                <div class="model-card">
+
+
+                    <!-- ICON -->
+
+                    <div class="model-icon">
+
+                        {% if "user" in model.object_name|lower %}
+
+                            U
+
+                        {% elif "job" in model.object_name|lower %}
+
+                            J
+
+                        {% elif "application" in model.object_name|lower %}
+
+                            A
+
+                        {% elif "group" in model.object_name|lower %}
+
+                            G
+
+                        {% else %}
+
+                            M
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- MODEL NAME -->
+
+                    <h2>
+                        {{ model.name }}
+                    </h2>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <p>
+                        Manage {{ model.name|lower }} on JobPortal.
+                    </p>
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="model-links">
+
+                        {% if model.admin_url %}
+
+                            <a
+                                href="{{ model.admin_url }}"
+                                class="view-link"
+                            >
+                                View
+                            </a>
+
+                        {% endif %}
+
+
+                        {% if model.add_url %}
+
+                            <a
+                                href="{{ model.add_url }}"
+                                class="add-link"
+                            >
+                                + Add
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- =====================================================
+         RECENT ACTIONS
+    ====================================================== -->
+
+    <div class="recent-card">
+
+        <div class="recent-header">
+
+            <h2>
+                Recent Actions
+            </h2>
+
+        </div>
+
+
+        <div class="recent-content">
+
+            {% load log %}
+
+            {% get_admin_log 8 as admin_log %}
+
+
+            {% if admin_log %}
+
+                {% for entry in admin_log %}
+
+                    <div class="recent-item">
+
+
+                        {% if entry.is_deletion %}
+
+                            <span>
+                                {{ entry.object_repr }}
+                            </span>
+
+
+                        {% elif entry.get_admin_url %}
+
+                            <a href="{{ entry.get_admin_url }}">
+                                {{ entry.object_repr }}
+                            </a>
+
+
+                        {% else %}
+
+                            <span>
+                                {{ entry.object_repr }}
+                            </span>
+
+                        {% endif %}
+
+
+                        <span class="recent-type">
+                            {{ entry.content_type.name|capfirst }}
+                        </span>
+
+                    </div>
+
+                {% endfor %}
+
+
+            {% else %}
+
+                <div class="no-actions">
+                    No recent actions.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

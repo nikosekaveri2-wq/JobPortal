@@ -1,0 +1,7 @@
+Django==6.1.1
+requests
+python-dotenv
+
+scikit-learn
+pypdf
+python-docx
